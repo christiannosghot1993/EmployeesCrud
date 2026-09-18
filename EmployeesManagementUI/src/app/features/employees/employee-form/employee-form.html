@@ -1,0 +1,93 @@
+<div class="mx-auto max-w-2xl">
+  <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
+    <h1 class="mb-6 text-2xl font-bold text-slate-900">
+      {{ isEdit() ? 'Edit employee' : 'New employee' }}
+    </h1>
+
+    @if (error()) {
+      <div class="mb-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{{ error() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label for="firstName" class="mb-1 block text-sm font-medium text-slate-700">First name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+          />
+          @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+            <p class="mt-1 text-xs text-red-600">First name is required.</p>
+          }
+        </div>
+
+        <div>
+          <label for="lastName" class="mb-1 block text-sm font-medium text-slate-700">Last name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+          />
+          @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+            <p class="mt-1 text-xs text-red-600">Last name is required.</p>
+          }
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="mb-1 block text-sm font-medium text-slate-700">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <p class="mt-1 text-xs text-red-600">A valid email is required.</p>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label for="position" class="mb-1 block text-sm font-medium text-slate-700">Position</label>
+          <input
+            id="position"
+            type="text"
+            formControlName="position"
+            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+          />
+          @if (form.controls.position.touched && form.controls.position.invalid) {
+            <p class="mt-1 text-xs text-red-600">Position is required.</p>
+          }
+        </div>
+
+        <div>
+          <label for="hireDate" class="mb-1 block text-sm font-medium text-slate-700">Hire date</label>
+          <input
+            id="hireDate"
+            type="date"
+            formControlName="hireDate"
+            class="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+          />
+          @if (form.controls.hireDate.touched && form.controls.hireDate.invalid) {
+            <p class="mt-1 text-xs text-red-600">Hire date is required.</p>
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button
+          type="submit"
+          [disabled]="loading()"
+          class="rounded-md bg-slate-900 px-4 py-2 font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+        >
+          {{ loading() ? 'Saving…' : 'Save' }}
+        </button>
+        <a routerLink="/employees" class="text-sm font-medium text-slate-600 hover:underline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
