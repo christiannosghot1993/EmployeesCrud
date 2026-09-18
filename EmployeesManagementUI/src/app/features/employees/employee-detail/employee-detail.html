@@ -1,0 +1,40 @@
+<div class="mx-auto max-w-2xl">
+  @if (error()) {
+    <div class="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{{ error() }}</div>
+  }
+
+  @if (employee(); as emp) {
+    <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
+      <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-slate-900">{{ emp.firstName }} {{ emp.lastName }}</h1>
+        <a
+          [routerLink]="['/employees', emp.id, 'edit']"
+          class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+        >
+          Edit
+        </a>
+      </div>
+
+      <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Email</dt>
+          <dd class="text-slate-900">{{ emp.email }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Position</dt>
+          <dd class="text-slate-900">{{ emp.position }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Hire date</dt>
+          <dd class="text-slate-900">{{ emp.hireDate | date: 'mediumDate' }}</dd>
+        </div>
+      </dl>
+
+      <div class="mt-8">
+        <a routerLink="/employees" class="text-sm font-medium text-slate-600 hover:underline">
+          ← Back to list
+        </a>
+      </div>
+    </div>
+  }
+</div>
