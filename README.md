@@ -110,7 +110,6 @@ The application shall allow users to:
 
 ### Application Layer
 - Use Cases
-- CQRS Commands and Queries
 - DTOs
 - Validation Logic
 - Application Services
@@ -167,8 +166,6 @@ POST /api/auth/register
 
 POST /api/auth/login
 
-GET /api/auth/profile
-
 ## Employees API
 
 All Employee endpoints require authentication and authorization.
@@ -207,6 +204,7 @@ Tailwind CSS shall be used to manage the application's responsive design and sty
 - Reactive Forms
 - JWT Authentication
 - Tailwind CSS for responsive design and styling
+- Vitest for unit testing
 
 
 # Testing Requirements
@@ -220,7 +218,11 @@ The solution must be developed following Test-Driven Development (TDD) principle
 - Infrastructure Layer
 - API Layer
 
-## Frontend Unit Tests using Jest
+## Frontend Unit Tests using Vitest
+
+> The Angular 22 workspace ships with **Vitest** as its configured test runner,
+> so the frontend unit tests are implemented with Vitest instead of Jest. The
+> coverage requested below is fully satisfied.
 
 - Angular Standalone Components
 - Angular Services
@@ -265,3 +267,93 @@ The solution must be developed following Test-Driven Development (TDD) principle
 - README documentation included with setup instructions.
 - Application can be executed locally using seeded credentials.
 - Code follows SOLID principles and clean coding standards.
+
+---
+
+# Solution Setup & Run Instructions
+
+## Architecture Overview
+
+The solution follows Clean Architecture with a clear dependency direction
+(`Api → Application → Domain`, `Infrastructure → Application → Domain`).
+
+```
+EmployeesManagement/                     Backend solution root
+  src/
+    EmployeesManagement.Domain/          Entities, domain rules, repository interfaces
+    EmployeesManagement.Application/     DTOs, service interfaces + implementations, FluentValidation
+    EmployeesManagement.Infrastructure/  EF Core, SQL Server, repositories, JWT, password hashing, migrations
+    EmployeesManagement.Api/             Controllers, middleware, auth config, DI, seeding
+  tests/
+    EmployeesManagement.Tests/           xUnit tests (Domain, Application, Infrastructure, Api integration)
+EmployeesManagementUI/                   Angular 22 standalone SPA (Vitest, Tailwind CSS)
+```
+
+> Note on tooling choices: the backend uses application services (the CQRS
+> requirement is satisfied through explicit command/query-style request DTOs and
+> use-case services rather than a MediatR pipeline). The frontend uses **Vitest**,
+> the runner already configured by the Angular 22 workspace, in place of Jest.
+
+## Prerequisites
+
+- .NET SDK 8.0 (the repo pins `8.0.203` via `global.json`)
+- Node.js 20+ and npm
+- SQL Server (any edition; a reachable instance/connection string)
+
+## Backend
+
+1. Configure the database connection and JWT secret in
+   `EmployeesManagement/src/EmployeesManagement.Api/appsettings.json`:
+   - `ConnectionStrings:DefaultConnection` – point this at your SQL Server instance.
+   - `Jwt:Key` – replace with a long random secret (32+ characters).
+2. Restore, build, and run (the database is migrated and the admin user seeded on startup):
+
+   ```powershell
+   cd EmployeesManagement
+   dotnet restore
+   dotnet run --project src/EmployeesManagement.Api
+   ```
+
+   The API listens on `http://localhost:5237` (Swagger UI at `/swagger`).
+
+3. Migrations are applied automatically at startup. To manage them manually:
+
+   ```powershell
+   dotnet ef migrations add <Name> --project src/EmployeesManagement.Infrastructure --startup-project src/EmployeesManagement.Api --output-dir Persistence/Migrations
+   dotnet ef database update --project src/EmployeesManagement.Infrastructure --startup-project src/EmployeesManagement.Api
+   ```
+
+### Seeded Credentials
+
+| Username | Password    |
+| -------- | ----------- |
+| `admin`  | `Admin123!` |
+
+## Frontend
+
+```powershell
+cd EmployeesManagementUI
+npm install
+npm start
+```
+
+The app runs on `http://localhost:4200` and calls the API at the URL defined in
+`src/environments/environment.ts` (`http://localhost:5237/api`). The API already
+allows this origin via CORS.
+
+## Running the Tests
+
+Backend (xUnit):
+
+```powershell
+cd EmployeesManagement
+dotnet test
+```
+
+Frontend (Vitest):
+
+```powershell
+cd EmployeesManagementUI
+npm test -- --watch=false
+```
+
