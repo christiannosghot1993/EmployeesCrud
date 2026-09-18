@@ -193,6 +193,8 @@ The application shall leverage RxJS and Angular Signals.
 
 The application shall use Angular Standalone Components.
 
+Tailwind CSS shall be used to manage the application's responsive design and styles.
+
 ## Frontend Technology Stack
 
 - Angular 22
@@ -204,6 +206,7 @@ The application shall use Angular Standalone Components.
 - Angular HttpClient
 - Reactive Forms
 - JWT Authentication
+- Tailwind CSS for responsive design and styling
 
 
 # Testing Requirements
