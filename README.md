@@ -213,23 +213,24 @@ The solution must be developed following Test-Driven Development (TDD) principle
 
 ## Backend Unit Tests using XUnit
 
-- Domain Layer
-- Application Layer
-- Infrastructure Layer
-- API Layer
+- Authentication and JWT token generation through the API
+- Authorization of protected employee endpoints
+- Employee CRUD operations through the API
+- Employee persistence through the repository layer
+- Request validation and unauthorized access handling
 
 ## Frontend Unit Tests using Vitest
 
 > The Angular 22 workspace ships with **Vitest** as its configured test runner,
 > so the frontend unit tests are implemented with Vitest instead of Jest. The
-> coverage requested below is fully satisfied.
+> tests focus on the application's core authentication and employee-management
+> services.
 
-- Angular Standalone Components
 - Angular Services
 - Route Guards
-- Reactive Forms
-- Authentication Flows
-- Employee CRUD Operations
+- HTTP authentication interceptor
+- Authentication session handling
+- Employee service HTTP operations
 
 ---
 
@@ -288,11 +289,6 @@ EmployeesManagement/                     Backend solution root
     EmployeesManagement.Tests/           xUnit tests (Domain, Application, Infrastructure, Api integration)
 EmployeesManagementUI/                   Angular 22 standalone SPA (Vitest, Tailwind CSS)
 ```
-
-> Note on tooling choices: the backend uses application services (the CQRS
-> requirement is satisfied through explicit command/query-style request DTOs and
-> use-case services rather than a MediatR pipeline). The frontend uses **Vitest**,
-> the runner already configured by the Angular 22 workspace, in place of Jest.
 
 ## Prerequisites
 
