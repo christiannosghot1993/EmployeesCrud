@@ -353,3 +353,7 @@ cd EmployeesManagementUI
 npm test -- --watch=false
 ```
 
+## GenAI Documentation
+
+For documentation of how Generative AI was used to design a Task Management REST API, including the prompt, representative generated code, validation process, security review, and improvements made, see [README-GENAI.md](README-GENAI.md).
+
